@@ -1,0 +1,44 @@
+version: "3"
+
+networks:
+  synchro:
+
+services:
+  database:
+    build: ./docker/database/
+    image: mysql-http-udf
+    tty: true
+    container_name: database
+    volumes:
+      - mysql_udf:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - 3306:3306
+    networks:
+      - synchro
+
+  mail_api:
+    build: ./docker/python
+    image: py_api_mailer
+    tty: true
+    container_name: mail_api
+    environment:
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+    ports:
+      - 80:5000
+    networks:
+      - synchro
+
+  mailcatcher:
+    image: rordi/docker-mailcatcher
+    ports:
+      - 1025:1025
+      - 1080:1080
+    networks:
+      - synchro
+
+volumes:
+  mysql_udf:
