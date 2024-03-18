@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 
 networks:
   synchro:
@@ -20,10 +20,14 @@ services:
       - synchro
 
   mail_api:
-    build: ./docker/python
+    build:
+      dockerfile: ../docker/python/Dockerfile
+      context: ./src
     image: py_api_mailer
     tty: true
     container_name: mail_api
+    volumes:
+      - ./src:/usr/src/app
     environment:
       SMTP_HOST: ${SMTP_HOST}
       SMTP_PORT: ${SMTP_PORT}

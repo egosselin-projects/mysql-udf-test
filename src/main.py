@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
 import smtplib
 import os
@@ -7,6 +7,7 @@ import os
 # main app object
 app = FastAPI()
 
+# message payload data model
 class Mail(BaseModel):
     sender: str
     dest: str
@@ -20,6 +21,7 @@ def process_get():
 
 @app.post("/mail")
 def process_post(mail: Mail):
+
   if not mail.sender or not mail.dest or not mail.subject or not mail.message:
     raise HTTPException(status_code=400, detail="Invalid data structure")
 

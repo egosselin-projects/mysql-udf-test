@@ -8,7 +8,7 @@ RUN apt-get update && \
 # installing build tools
 RUN apt-get install -y make gcc libmysqlclient-dev pkg-config wget git libcurl4-openssl-dev
 
-RUN git clone https://github.com/egosselin-dev/mysql-udf-http.git
+RUN git clone https://github.com/egosselin-projects/mysql-udf-http.git
 
 # setting file permissions
 RUN cd mysql-udf-http && chmod +x configure 
